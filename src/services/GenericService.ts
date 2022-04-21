@@ -4,8 +4,8 @@ import GenericModel from '../models/GenericModel';
 export interface ServiceError {
   error: ZodError;
 }
-abstract class GenericService<T> {
-  constructor(protected model: GenericModel<T>) { }
+class GenericService<T> {
+  constructor(public model: GenericModel<T>) { }
 
   public create = async (obj: T)
   : Promise<T | null | ServiceError> => this.model.create(obj);
