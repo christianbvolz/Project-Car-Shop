@@ -40,11 +40,14 @@ class CarController extends GenericController<Car> {
     const { id } = req.params;
     try {
       const frame = await this.service.readOne(id);
+      console.log(frame);
+      
       return frame
         ? res.json(frame)
         : res.status(404).json({ error: this.errors.notFound });
     } catch (error) {
-      return res.status(500).json({ error: this.errors.internal });
+      return res.status(400).json({
+        error: 'Id must have 24 hexadecimal characters' });
     }
   };
 }
