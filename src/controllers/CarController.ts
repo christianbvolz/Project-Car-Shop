@@ -4,6 +4,8 @@ import GenericController,
 import CarService from '../services/CarsService';
 import { Car } from '../interfaces/CarInterface';
 
+const MAX_LENGTH_ID = 'Id must have 24 hexadecimal characters';
+
 class CarController extends GenericController<Car> {
   private _route: string;
 
@@ -45,7 +47,7 @@ class CarController extends GenericController<Car> {
         : res.status(404).json({ error: this.errors.notFound });
     } catch (error) {
       return res.status(400).json({
-        error: 'Id must have 24 hexadecimal characters' });
+        error: MAX_LENGTH_ID });
     }
   };
 
@@ -64,7 +66,25 @@ class CarController extends GenericController<Car> {
         : res.status(404).json({ error: this.errors.notFound });
     } catch (error) {
       return res.status(400).json({
-        error: 'Id must have 24 hexadecimal characters' });
+        error: MAX_LENGTH_ID });
+    }
+  };
+
+  public delete = async (
+    req: Request<{ id: string }>,
+    res: Response<Car | ResponseError>,
+  ): Promise<typeof res> => {
+    const { id } = req.params;
+
+    try {
+      const deleted = await this.service.delete(id);
+
+      return deleted
+        ? res.status(204).json(deleted)
+        : res.status(404).json({ error: this.errors.notFound });
+    } catch (error) {
+      return res.status(400).json({
+        error: MAX_LENGTH_ID });
     }
   };
 }
